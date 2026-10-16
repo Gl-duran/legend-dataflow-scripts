@@ -151,17 +151,7 @@ def lq_calibration(
         **({"use_log_pdf": True} if use_log_pdf else {}),
     )
 
-    initial_param = "LQ_Ecorr" if suffix is None else f"LQ_Ecorr_{suffix}"
-    data[initial_param] = np.divide(data[lq_param], data[energy_param])
-
-    lq.update_cal_dicts(
-        {
-            initial_param: {
-                "expression": f"{lq_param}/{energy_param}",
-                "parameters": {},
-            }
-        }
-    )
+    initial_param = "LQ" if suffix is None else f"LQ_{suffix}"
 
     lq.calibrate(data, initial_param, **({} if suffix is None else {"suffix": suffix}))
     return cal_dicts, get_results_dict(lq), fill_plot_dict(lq, data, plot_options), lq
